@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jieun246/commit_me.git"
+    "url": "git+https://github.com/ije90s/commit_me.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jieun246/commit_me/issues"
+    "url": "https://github.com/ije90s/commit_me/issues"
   },
-  "homepage": "https://github.com/jieun246/commit_me#readme",
+  "homepage": "https://github.com/ije90s/commit_me#readme",
   "workspaces": [
     "backend",
     "frontend"
