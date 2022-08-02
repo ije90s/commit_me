@@ -12,6 +12,6 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  await app.listen(port);
+  await app.listen(port || 8000);
 }
 bootstrap();
