@@ -23,7 +23,7 @@ export class AppService {
     if (kind === 'now') {
       //현재
       const nowYear = weekStartDate.getFullYear();
-      const nowMonth = weekStartDate.getMonth() + 1;
+      const nowMonth = weekStartDate.getMonth();
       const nowDay = weekStartDate.getDate();
       const nowDayOfWeek = weekStartDate.getDay();
       weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek); //일요일
