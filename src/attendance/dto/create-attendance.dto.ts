@@ -1,3 +1,4 @@
+import { PartialType } from '@nestjs/mapped-types';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateAttendanceDto {
@@ -7,4 +8,9 @@ export class CreateAttendanceDto {
 
   @IsNotEmpty()
   attendance_date: Date;
+}
+
+export class SearchAttendanceDto extends PartialType(CreateAttendanceDto) {
+  image_url: string;
+  count: number;
 }
