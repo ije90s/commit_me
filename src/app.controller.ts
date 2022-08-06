@@ -10,6 +10,7 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  //1주차 조회
   @Get('/week-search')
   getWeekDate(
     @Query('startDate') startDate: string,
@@ -17,5 +18,14 @@ export class AppController {
     @Query('kind') kind: string,
   ): object {
     return this.appService.getWeekDate(startDate, endDate, kind);
+  }
+
+  //월별 조회
+  @Get('/month-week-search')
+  getMonthDate(
+    @Query('year') year: number,
+    @Query('month') month: number,
+  ): string[] {
+    return this.appService.getMonthDate(year, month);
   }
 }
