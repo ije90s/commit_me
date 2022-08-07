@@ -1,64 +1,63 @@
 import { Injectable } from '@nestjs/common';
 
+//한주의 날짜 생성
+const createWeekDate = (date: Date) => {
+  let weekDateStr = '';
+  // 토요일까지의 날짜 셋팅
+  for (let i = 0; i < 7; i++) {
+    if (i !== 0) date.setDate(date.getDate() + 1);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    weekDateStr += `${year}-${month}-${day},`;
+  }
+  weekDateStr = weekDateStr.slice(0, -1);
+  return weekDateStr;
+};
+
 @Injectable()
 export class AppService {
   getHello(): string {
     return 'Hello World!';
   }
 
-  getWeekDate(startDate: string, endDate: string, kind: string) {
-    let weekDate = {};
+  getWeekDate(date: string, kind: string): object {
+    let responseData = {};
     //받은 값
-    const setStart = !startDate ? new Date() : new Date(startDate);
-    const setEnd = !endDate ? new Date() : new Date(endDate);
+    const setDate = !date ? new Date() : new Date(date);
 
     //년,월,수 가져오기
-    const startYear = setStart.getFullYear();
-    const startMonth = setStart.getMonth();
-    const startDay = setStart.getDate();
-    const endYear = setEnd.getFullYear();
-    const endMonth = setEnd.getMonth();
-    const endDay = setEnd.getDate();
+    const year = setDate.getFullYear();
+    const month = setDate.getMonth();
+    const day = setDate.getDate();
 
-    //시작일,끝일
+    //시작일 셋팅
     let weekStartDate = new Date();
-    let weekEndDate = new Date();
+    let weekDate = '';
 
     if (kind === 'now') {
       //현재
-      const dayOfWeek = setStart.getDay();
-      weekStartDate = new Date(startYear, startMonth, startDay - dayOfWeek); //일요일
-      weekEndDate = new Date(startYear, startMonth, startDay + (6 - dayOfWeek)); //토요일
+      const dayOfWeek = setDate.getDay();
+      weekStartDate = new Date(year, month, day - dayOfWeek); //일요일
     } else if (kind === 'prev') {
       //이전
-      weekStartDate = new Date(startYear, startMonth, startDay - 7);
-      weekEndDate = new Date(endYear, endMonth, endDay - 7);
+      weekStartDate = new Date(year, month, day - 7);
     } else if (kind === 'next') {
       //다음
-      weekStartDate = new Date(startYear, startMonth, startDay + 7);
-      weekEndDate = new Date(endYear, endMonth, endDay + 7);
+      weekStartDate = new Date(year, month, day + 7);
     }
 
-    //시작일 셋팅
-    let year = weekStartDate.getFullYear();
-    let month = String(weekStartDate.getMonth() + 1).padStart(2, '0');
-    let day = String(weekStartDate.getDate()).padStart(2, '0');
-    const firstStr = `${year}-${month}-${day}`;
+    weekDate = createWeekDate(weekStartDate);
 
-    //끝일 셋팅
-    year = weekEndDate.getFullYear();
-    month = String(weekEndDate.getMonth() + 1).padStart(2, '0');
-    day = String(weekEndDate.getDate()).padStart(2, '0');
-    const endStr = `${year}-${month}-${day}`;
-    weekDate = {
-      startDate: firstStr,
-      endDate: endStr,
+    responseData = {
+      ...responseData,
+      weekDate,
     };
 
-    return weekDate;
+    return responseData;
   }
 
-  getMonthDate(year: number, month: number) {
+  getMonthDate(year: number, month: number): string[] {
     const monthArr = [];
     let weekNum = 1;
     const date = new Date(year, month - 1);
@@ -66,7 +65,7 @@ export class AppService {
     const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0); //막일
 
     do {
-      //첫일의 달이 더 크다면, break
+      //다음달로 바뀌면 break
       if (lastDay.getMonth() < firstDay.getMonth()) break;
 
       //첫일의 년,월,일,요일 가져오기
@@ -74,25 +73,15 @@ export class AppService {
       const month = firstDay.getMonth();
       const day = firstDay.getDate();
       const dayOfWeek = firstDay.getDay();
+      let weekDate = '';
 
       //주의 시작일 셋팅
       const weekStartDate = new Date(year, month, day - dayOfWeek); //일요일
-      let weekYear = weekStartDate.getFullYear();
-      let weekMonth = String(weekStartDate.getMonth() + 1).padStart(2, '0');
-      let weekDay = String(weekStartDate.getDate()).padStart(2, '0');
-      const firstStr = `${weekYear}-${weekMonth}-${weekDay}`;
-
-      //주의 끝일 셋팅
-      const weekEndDate = new Date(year, month, day + (6 - dayOfWeek)); //토요일
-      weekYear = weekEndDate.getFullYear();
-      weekMonth = String(weekEndDate.getMonth() + 1).padStart(2, '0');
-      weekDay = String(weekEndDate.getDate()).padStart(2, '0');
-      const endtStr = `${weekYear}-${weekMonth}-${weekDay}`;
+      weekDate = createWeekDate(weekStartDate);
 
       monthArr.push({
         weekNum,
-        weekStartDate: firstStr,
-        weekEndDate: endtStr,
+        weekDate,
       });
 
       //첫일+7로 재설정

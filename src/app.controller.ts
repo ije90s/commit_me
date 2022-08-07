@@ -14,10 +14,9 @@ export class AppController {
   @Get('/week-search')
   getWeekDate(
     @Query('startDate') startDate: string,
-    @Query('endDate') endDate: string,
     @Query('kind') kind: string,
   ): object {
-    return this.appService.getWeekDate(startDate, endDate, kind);
+    return this.appService.getWeekDate(startDate, kind);
   }
 
   //월별 조회
