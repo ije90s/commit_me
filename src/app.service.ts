@@ -66,7 +66,8 @@ export class AppService {
 
     do {
       //다음달로 바뀌면 break
-      if (lastDay.getMonth() < firstDay.getMonth()) break;
+      if (lastDay.getMonth() < firstDay.getMonth() || firstDay.getMonth() === 0)
+        break;
 
       //첫일의 년,월,일,요일 가져오기
       const year = firstDay.getFullYear();
