@@ -11,7 +11,7 @@
 $ npm install
 ```
 
-## Running app && test
+## Running app
 
 ```
 # development
